@@ -4,12 +4,26 @@ using namespace std;
 int main() {
     string line, s = "";
     while (getline(cin, line)) s += line;
-
     int n = s.length(); 
+
+    bool dont = 0;
     vector<int> v;
     for (int i = 0; i < n; i++) {
-        if (i + 7 < n && s.substr(i, 4) == "mul(") {
+        if (i + 3 < n && s.substr(i, 4) == "do()") {
+            dont = 0;
+            i += 3;
+            continue;
+        }
+
+        if (i + 6 < n && s.substr(i, 7) == "don't()") {
+            dont = 1;
+            i += 6;
+            continue;
+        }
+
+        if (!dont && i + 7 < n && s.substr(i, 4) == "mul(") {
             v.push_back(i + 4); 
+            i += 3;
         }
     }
 
@@ -40,7 +54,7 @@ int main() {
                 y = y * 10 + (s[i] - '0');
             }
         }
-
+        
         ans += (!par || x == -1 || y == -1 || x > 999 || y > 999 ? 0 : x * y);
     }
 
